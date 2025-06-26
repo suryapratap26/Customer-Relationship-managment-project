@@ -1,52 +1,80 @@
-// WorkflowController.java
 package com.CustomerRelationshipManagement.controller;
 
-import java.util.List;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.CustomerRelationshipManagement.dtos.CustomerDto;
-import com.CustomerRelationshipManagement.service.WorkflowService;
+import com.CustomerRelationshipManagement.entities.Customer;
+import com.CustomerRelationshipManagement.entities.CustomerAssignment;
+import com.CustomerRelationshipManagement.services.WorkflowService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/workflow")
 public class WorkflowController {
 
-    private final WorkflowService workflowService;
-
     @Autowired
-    public WorkflowController(WorkflowService workflowService) {
-        this.workflowService = workflowService;
-    }
+    private WorkflowService workflowService;
 
+    // Assign a customer to a user
     @PostMapping("/assign")
-    public String assignCustomerToUser(@RequestParam String customerPhone, @RequestParam String userPhone) {
-        workflowService.assignCustomer(customerPhone, userPhone);
-        return "Customer assigned successfully.";
+    public ResponseEntity<CustomerAssignment> assignCustomerToUser(
+            @RequestParam String customerPhoneNumber,
+            @RequestParam String userPhoneNumber) {
+        CustomerAssignment assignment = workflowService.assignCustomerToUser(customerPhoneNumber, userPhoneNumber);
+        return new ResponseEntity<>(assignment, HttpStatus.CREATED);
     }
 
-    @GetMapping("/assigned-customers/{userPhone}")
-    public List<CustomerDto> getCustomersAssignedToUser(@PathVariable String userPhone) {
-        return workflowService.getCustomersByUser(userPhone);
+    // Retrieve customers assigned to a user
+    @GetMapping("/user/{userPhoneNumber}/customers")
+    public ResponseEntity<List<Customer>> getCustomersAssignedToUser(@PathVariable String userPhoneNumber) {
+        List<Customer> customers = workflowService.getCustomersAssignedToUser(userPhoneNumber);
+        return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
-    @GetMapping("/export/customers")
-    public byte[] exportCustomerCsv() {
-        return workflowService.downloadCustomerCsv();
+    // Download all customer data as CSV
+    @GetMapping("/customers/download")
+    public ResponseEntity<ByteArrayResource> downloadAllCustomersCsv() {
+        byte[] csvData = workflowService.downloadAllCustomersCsv();
+        ByteArrayResource resource = new ByteArrayResource(csvData);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=customers.csv")
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(resource);
     }
 
-    @GetMapping("/export/users")
-    public byte[] exportUserCsv() {
-        return workflowService.downloadUserCsv();
+    // Download all user data as CSV
+    @GetMapping("/users/download")
+    public ResponseEntity<ByteArrayResource> downloadAllUsersCsv() {
+        byte[] csvData = workflowService.downloadAllUsersCsv();
+        ByteArrayResource resource = new ByteArrayResource(csvData);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=users.csv")
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(resource);
     }
 
+    // Predict expected number of new customers
     @GetMapping("/predict-customers")
-    public Integer predictCustomerGrowth(@RequestParam String from, @RequestParam String to) {
-        return workflowService.predictNewCustomers(from, to);
+    public ResponseEntity<Long> predictNewCustomers(
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate) {
+        long predictedCount = workflowService.predictNewCustomers(startDate, endDate);
+        return new ResponseEntity<>(predictedCount, HttpStatus.OK);
     }
 
+    // Merge two customer records
     @PostMapping("/merge")
-    public CustomerDto mergeCustomers(@RequestParam String primaryPhone, @RequestParam String secondaryPhone) {
-        return workflowService.mergeCustomers(primaryPhone, secondaryPhone);
+    public ResponseEntity<Customer> mergeCustomers(
+            @RequestParam String primaryPhoneNumber,
+            @RequestParam String secondaryPhoneNumber) {
+        Customer mergedCustomer = workflowService.mergeCustomers(primaryPhoneNumber, secondaryPhoneNumber);
+        return new ResponseEntity<>(mergedCustomer, HttpStatus.OK);
     }
 }

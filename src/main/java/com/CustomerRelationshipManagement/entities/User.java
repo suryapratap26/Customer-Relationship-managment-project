@@ -1,57 +1,72 @@
 package com.CustomerRelationshipManagement.entities;
 
+import java.time.LocalDateTime;
 
-
-import lombok.Data;
-import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-//User Entity
 @Entity
 @Table(name = "users")
 @Data
 @EntityListeners(AuditingEntityListener.class)
 public class User {
- @Id
- @Column(name = "phone_number", length = 15, unique = true)
- private String phoneNumber;
+    @Id
+    @Column(name = "phone_number", length = 15, unique = true)
+    @NotBlank(message = "Phone number is required")
+    @Size(max = 15, message = "Phone number must be up to 15 characters")
+    private String phoneNumber;
 
- @Column(nullable = false)
- private String firstName;
+    @Column(nullable = false)
+    @NotBlank(message = "First name is required")
+    private String firstName;
 
- @Column(nullable = false)
- private String lastName;
+    @Column(nullable = false)
+    @NotBlank(message = "Last name is required")
+    private String lastName;
 
- @Column
- private String email;
+    @Column
+    @Email(message = "Email must be valid")
+    private String email;
 
- @Column(nullable = false)
- private String password;
+    @Column(nullable = false)
+    @NotBlank(message = "Password is required")
+    private String password;
 
- @ManyToOne
- @JoinColumn(name = "user_type_id", nullable = false)
- private UserType userType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type", nullable = false)
+    @NotNull(message = "User type is required")
+    private UserType userType;
 
- @Column(nullable = false)
- private boolean active = true;
+    @Column(nullable = false)
+    private boolean active = true;
 
- @CreatedDate
- @Column(updatable = false)
- private LocalDateTime createdDate;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
 
- @LastModifiedDate
- private LocalDateTime lastModifiedDate;
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 
- @CreatedBy
- @Column(updatable = false)
- private String createdBy;
+    @CreatedBy
+    @Column(updatable = false)
+    private String createdBy;
 
- @LastModifiedBy
- private String lastModifiedBy;
+    @LastModifiedBy
+    private String lastModifiedBy;
 }

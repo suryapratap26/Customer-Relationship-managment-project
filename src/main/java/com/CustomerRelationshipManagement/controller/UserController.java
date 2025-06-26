@@ -1,73 +1,81 @@
-// UserController.java
 package com.CustomerRelationshipManagement.controller;
 
-import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
+import com.CustomerRelationshipManagement.entities.AuditLog;
+import com.CustomerRelationshipManagement.entities.User;
+import com.CustomerRelationshipManagement.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import com.CustomerRelationshipManagement.dtos.UserDto;
-import com.CustomerRelationshipManagement.dtos.UserTypeDto;
-import com.CustomerRelationshipManagement.service.UserService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
-
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @PostMapping
-    public UserDto createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public Page<UserDto> getUsers(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "firstName") String sortBy,
-            @RequestParam(required = false) String keyword  // if supported
-    ) {
-        return userService.getUsers(page, size, sortBy, keyword);
+    public ResponseEntity<Page<User>> getAllUsers(Pageable pageable) {
+        Page<User> users = userService.getAllUsers(pageable);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{phoneNumber}")
-    public UserDto getUser(@PathVariable String phoneNumber) {
-        return userService.getUser(phoneNumber);
+    public ResponseEntity<User> getUserByPhoneNumber(@PathVariable String phoneNumber) {
+        User user = userService.getUserByPhoneNumber(phoneNumber);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUsers(@RequestParam String field, @RequestParam String value) {
+        List<User> users = userService.searchUsers(field, value);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PutMapping("/{phoneNumber}")
-    public UserDto updateUser(@PathVariable String phoneNumber, @RequestBody UserDto userDto) {
-        return userService.updateUser(phoneNumber, userDto);
+    public ResponseEntity<User> updateUser(@PathVariable String phoneNumber, @RequestBody User user) {
+        User updatedUser = userService.updateUser(phoneNumber, user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @DeleteMapping("/{phoneNumber}")
-    public boolean deleteUser(@PathVariable String phoneNumber) {
-        return userService.deleteUser(phoneNumber);
+    public ResponseEntity<Void> deleteUser(@PathVariable String phoneNumber) {
+        userService.deleteUser(phoneNumber);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/reset-password/{phoneNumber}")
-    public void resetPassword(@PathVariable String phoneNumber) {
-        userService.resetPassword(phoneNumber);
+    @PutMapping("/{phoneNumber}/reset-password")
+    public ResponseEntity<Void> resetPassword(@PathVariable String phoneNumber, @RequestBody PasswordResetRequest request) {
+        userService.resetPassword(phoneNumber, request.getNewPassword());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/audit/{phoneNumber}")
-    public List<String> getUserAuditLogs(@PathVariable String phoneNumber) {
-        return userService.getAuditLogs(phoneNumber);
+    @GetMapping("/{phoneNumber}/audit-logs")
+    public ResponseEntity<List<AuditLog>> getUserAuditLogs(@PathVariable String phoneNumber) {
+        List<AuditLog> auditLogs = userService.getUserAuditLogs(phoneNumber);
+        return new ResponseEntity<>(auditLogs, HttpStatus.OK);
+    }
+}
+
+class PasswordResetRequest {
+    private String newPassword;
+
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    @PostMapping("/usertypes")
-    public UserTypeDto createUserType(@RequestBody UserTypeDto userTypeDto) {
-        return userService.createUserType(userTypeDto);
-    }
-
-    @GetMapping("/usertypes")
-    public List<UserTypeDto> getAllUserTypes() {
-        return userService.getAllUserTypes();
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }
