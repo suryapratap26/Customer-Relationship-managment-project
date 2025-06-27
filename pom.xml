@@ -19,7 +19,7 @@
     <description>Customer Relationship Management System with Spring Boot</description>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
         <jjwt.version>0.11.5</jjwt.version>
         <opencsv.version>5.9</opencsv.version>
         <lombok.version>1.18.30</lombok.version>
