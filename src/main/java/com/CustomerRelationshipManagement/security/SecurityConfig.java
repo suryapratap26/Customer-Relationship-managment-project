@@ -32,8 +32,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()  // ✅ Allow register/login
-                        .anyRequest().authenticated()                // ✅ Secure everything else
+                        .requestMatchers("/api/auth/**").permitAll()  // ✅ Permit /register
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -42,6 +42,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
 
     @Bean
