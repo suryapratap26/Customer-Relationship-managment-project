@@ -173,7 +173,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private String getCurrentUser() {
-        // Placeholder for retrieving current authenticated user
+        
         return "system";
     }
 }
