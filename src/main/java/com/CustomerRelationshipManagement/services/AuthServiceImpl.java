@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.CustomerRelationshipManagement.dto.RegisterRequest;
 import com.CustomerRelationshipManagement.entities.User;
 import com.CustomerRelationshipManagement.entities.UserType;
 import com.CustomerRelationshipManagement.repositories.UserRepository;
@@ -27,21 +26,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public User register(RegisterRequest registerRequest) {
-        if (userRepository.existsById(registerRequest.getPhoneNumber())) {
-            throw new IllegalArgumentException("User already exists with phone number: " + registerRequest.getPhoneNumber());
+    public User register(User user) {
+        if (userRepository.existsById(user.getPhoneNumber())) {
+            throw new IllegalArgumentException("User already exists with phone number: " + user.getPhoneNumber());
         }
-        User user = new User();
-        user.setPhoneNumber(registerRequest.getPhoneNumber());
-        user.setFirstName(registerRequest.getFirstName());
-        user.setLastName(registerRequest.getLastName());
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setUserType(UserType.USER); // Set default user type to USER
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setUserType(UserType.USER); // Default user type
         user.setCreatedDate(LocalDateTime.now());
         user.setLastModifiedDate(LocalDateTime.now());
         user.setCreatedBy(getCurrentUser());
         user.setLastModifiedBy(getCurrentUser());
+
         return userRepository.save(user);
     }
 
@@ -56,7 +52,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String getCurrentUser() {
-        // Placeholder for retrieving current authenticated user
         return "system";
     }
 }

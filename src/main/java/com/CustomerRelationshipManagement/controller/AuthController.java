@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CustomerRelationshipManagement.dto.LoginRequest;
-import com.CustomerRelationshipManagement.dto.RegisterRequest;
 import com.CustomerRelationshipManagement.entities.User;
 import com.CustomerRelationshipManagement.services.AuthService;
 
@@ -40,9 +39,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody @Valid User user) {
         try {
-            User registeredUser = authService.register(registerRequest);
+            User registeredUser = authService.register(user);
             return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             Map<String, String> error = new HashMap<>();
@@ -51,4 +50,3 @@ public class AuthController {
         }
     }
 }
-

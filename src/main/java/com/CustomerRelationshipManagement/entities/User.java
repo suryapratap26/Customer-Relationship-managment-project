@@ -50,8 +50,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", nullable = false)
-    @NotNull(message = "User type is required")
-    private UserType userType;
+    private UserType userType = UserType.USER;
+
 
     @Column(nullable = false)
     private boolean active = true;
