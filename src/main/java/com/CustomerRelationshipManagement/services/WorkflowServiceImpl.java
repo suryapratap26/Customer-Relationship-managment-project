@@ -7,6 +7,7 @@ import com.CustomerRelationshipManagement.repositories.CustomerAssignmentReposit
 import com.CustomerRelationshipManagement.repositories.CustomerRepository;
 import com.CustomerRelationshipManagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,7 +129,6 @@ public class WorkflowServiceImpl implements WorkflowService {
     }
 
     private String getCurrentUser() {
-        // Placeholder for retrieving current authenticated user
-        return "system";
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }
