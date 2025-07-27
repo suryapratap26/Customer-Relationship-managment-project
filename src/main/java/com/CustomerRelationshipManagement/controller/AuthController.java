@@ -1,4 +1,4 @@
-package com.CustomerRelationshipManagement.controller;
+package com.customerRelationshipManagement.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.CustomerRelationshipManagement.dto.LoginRequest;
-import com.CustomerRelationshipManagement.entities.User;
-import com.CustomerRelationshipManagement.services.AuthService;
+import com.customerRelationshipManagement.dto.LoginRequest;
+import com.customerRelationshipManagement.entities.User;
+import com.customerRelationshipManagement.services.AuthService;
 
 import jakarta.validation.Valid;
 

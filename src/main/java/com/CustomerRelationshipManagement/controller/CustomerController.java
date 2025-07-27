@@ -1,9 +1,9 @@
-package com.CustomerRelationshipManagement.controller;
+package com.customerRelationshipManagement.controller;
 
 
-import com.CustomerRelationshipManagement.entities.AuditLog;
-import com.CustomerRelationshipManagement.entities.Customer;
-import com.CustomerRelationshipManagement.services.CustomerService;
+import com.customerRelationshipManagement.entities.AuditLog;
+import com.customerRelationshipManagement.entities.Customer;
+import com.customerRelationshipManagement.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

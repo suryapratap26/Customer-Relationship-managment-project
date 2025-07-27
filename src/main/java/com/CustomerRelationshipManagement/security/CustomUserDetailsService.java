@@ -1,14 +1,16 @@
-package com.CustomerRelationshipManagement.security;
+package com.customerRelationshipManagement.security;
 
-import com.CustomerRelationshipManagement.entities.User;
-import com.CustomerRelationshipManagement.repositories.UserRepository;
+import com.customerRelationshipManagement.entities.User;
+import com.customerRelationshipManagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -20,6 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
         User user = userRepository.findById(phoneNumber)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with phone number: " + phoneNumber));
+
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getUserType().name());
+
         return new org.springframework.security.core.userdetails.User(
                 user.getPhoneNumber(),
                 user.getPassword(),
@@ -27,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 true,
-                new ArrayList<>() // Add authorities based on userType if needed
+                Collections.singleton(authority)
         );
     }
 }

@@ -1,4 +1,4 @@
-package com.CustomerRelationshipManagement.utils;
+package com.customerRelationshipManagement.utils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

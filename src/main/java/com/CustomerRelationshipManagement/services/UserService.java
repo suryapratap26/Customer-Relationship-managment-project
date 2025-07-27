@@ -1,7 +1,7 @@
-package com.CustomerRelationshipManagement.services;
+package com.customerRelationshipManagement.services;
 
-import com.CustomerRelationshipManagement.entities.AuditLog;
-import com.CustomerRelationshipManagement.entities.User;
+import com.customerRelationshipManagement.entities.AuditLog;
+import com.customerRelationshipManagement.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

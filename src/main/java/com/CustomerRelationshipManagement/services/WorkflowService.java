@@ -1,7 +1,7 @@
-package com.CustomerRelationshipManagement.services;
+package com.customerRelationshipManagement.services;
 
-import com.CustomerRelationshipManagement.entities.Customer;
-import com.CustomerRelationshipManagement.entities.CustomerAssignment;
+import com.customerRelationshipManagement.entities.Customer;
+import com.customerRelationshipManagement.entities.CustomerAssignment;
 
 import java.time.LocalDate;
 import java.util.List;

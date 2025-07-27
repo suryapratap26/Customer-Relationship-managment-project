@@ -1,4 +1,4 @@
-package com.CustomerRelationshipManagement.dto;
+package com.customerRelationshipManagement.dto;
 
 
 public class PasswordResetRequest {

@@ -1,4 +1,4 @@
-package com.CustomerRelationshipManagement.config;
+package com.customerRelationshipManagement.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,13 +1,12 @@
-package com.CustomerRelationshipManagement.services;
+package com.customerRelationshipManagement.services;
 
-import com.CustomerRelationshipManagement.entities.AuditLog;
-import com.CustomerRelationshipManagement.entities.Customer;
-import com.CustomerRelationshipManagement.repositories.AuditLogRepository;
-import com.CustomerRelationshipManagement.repositories.CustomerRepository;
+import com.customerRelationshipManagement.entities.AuditLog;
+import com.customerRelationshipManagement.entities.Customer;
+import com.customerRelationshipManagement.repositories.AuditLogRepository;
+import com.customerRelationshipManagement.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public Customer createCustomer(Customer customer) {
-        validateCustomer(customer);
+
         customer.setCreatedDate(LocalDateTime.now());
         customer.setLastModifiedDate(LocalDateTime.now());
         customer.setCreatedBy(getCurrentUser());
@@ -172,7 +171,9 @@ public class CustomerServiceImpl implements CustomerService {
         log.setChangedBy(getCurrentUser());
         auditLogRepository.save(log);
     }
+
     private String getCurrentUser() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        
+        return "system";
     }
 }

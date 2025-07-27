@@ -1,17 +1,16 @@
-package com.CustomerRelationshipManagement.services;
+package com.customerRelationshipManagement.services;
 
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.CustomerRelationshipManagement.entities.User;
-import com.CustomerRelationshipManagement.entities.UserType;
-import com.CustomerRelationshipManagement.repositories.UserRepository;
-import com.CustomerRelationshipManagement.utils.JwtUtil;
+import com.customerRelationshipManagement.entities.User;
+import com.customerRelationshipManagement.entities.UserType;
+import com.customerRelationshipManagement.repositories.UserRepository;
+import com.customerRelationshipManagement.utils.JwtUtil;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -53,7 +52,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String getCurrentUser() {
-
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return "system";
     }
 }

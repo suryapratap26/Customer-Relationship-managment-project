@@ -1,6 +1,6 @@
-package com.CustomerRelationshipManagement.services;
+package com.customerRelationshipManagement.services;
 
-import com.CustomerRelationshipManagement.entities.User;
+import com.customerRelationshipManagement.entities.User;
 
 public interface AuthService {
     User register(User user);

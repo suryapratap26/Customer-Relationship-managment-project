@@ -1,6 +1,6 @@
-package com.CustomerRelationshipManagement.repositories;
+package com.customerRelationshipManagement.repositories;
 
-import com.CustomerRelationshipManagement.entities.Customer;
+import com.customerRelationshipManagement.entities.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

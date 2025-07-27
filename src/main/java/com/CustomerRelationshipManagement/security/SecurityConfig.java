@@ -1,6 +1,6 @@
-package com.CustomerRelationshipManagement.security;
+package com.customerRelationshipManagement.security;
 
-import com.CustomerRelationshipManagement.utils.JwtAuthenticationFilter;
+import com.customerRelationshipManagement.utils.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

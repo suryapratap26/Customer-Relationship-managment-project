@@ -1,4 +1,4 @@
-package com.CustomerRelationshipManagement.utils;
+package com.customerRelationshipManagement.utils;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

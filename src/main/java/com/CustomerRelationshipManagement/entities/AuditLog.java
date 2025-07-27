@@ -1,4 +1,4 @@
-package com.CustomerRelationshipManagement.entities;
+package com.customerRelationshipManagement.entities;
 
 import java.time.LocalDateTime;
 

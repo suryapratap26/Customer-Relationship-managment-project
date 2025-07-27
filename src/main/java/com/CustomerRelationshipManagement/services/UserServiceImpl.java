@@ -1,14 +1,12 @@
-package com.CustomerRelationshipManagement.services;
+package com.customerRelationshipManagement.services;
 
-import com.CustomerRelationshipManagement.entities.AuditLog;
-import com.CustomerRelationshipManagement.entities.User;
-import com.CustomerRelationshipManagement.entities.UserType;
-import com.CustomerRelationshipManagement.repositories.AuditLogRepository;
-import com.CustomerRelationshipManagement.repositories.UserRepository;
+import com.customerRelationshipManagement.entities.AuditLog;
+import com.customerRelationshipManagement.entities.User;
+import com.customerRelationshipManagement.repositories.AuditLogRepository;
+import com.customerRelationshipManagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -155,6 +153,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private String getCurrentUser() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        // Placeholder for retrieving current authenticated user
+        return "system";
     }
 }

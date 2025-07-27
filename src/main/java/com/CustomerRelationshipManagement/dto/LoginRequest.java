@@ -1,4 +1,4 @@
-package com.CustomerRelationshipManagement.dto;
+package com.customerRelationshipManagement.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

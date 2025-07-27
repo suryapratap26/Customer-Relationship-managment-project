@@ -1,15 +1,15 @@
-package com.CustomerRelationshipManagement.controller;
+package com.customerRelationshipManagement.controller;
 
-
-import com.CustomerRelationshipManagement.entities.Customer;
-import com.CustomerRelationshipManagement.entities.CustomerAssignment;
-import com.CustomerRelationshipManagement.services.WorkflowService;
+import com.customerRelationshipManagement.entities.Customer;
+import com.customerRelationshipManagement.entities.CustomerAssignment;
+import com.customerRelationshipManagement.services.WorkflowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,23 +22,23 @@ public class WorkflowController {
     @Autowired
     private WorkflowService workflowService;
 
-    // Assign a customer to a user
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/assign")
     public ResponseEntity<CustomerAssignment> assignCustomerToUser(
             @RequestParam String customerPhoneNumber,
             @RequestParam String userPhoneNumber) {
-        CustomerAssignment assignment = workflowService.assignCustomerToUser(customerPhoneNumber, userPhoneNumber);
-        return new ResponseEntity<>(assignment, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                workflowService.assignCustomerToUser(customerPhoneNumber, userPhoneNumber), HttpStatus.CREATED);
     }
 
-    // Retrieve customers assigned to a user
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/user/{userPhoneNumber}/customers")
-    public ResponseEntity<List<Customer>> getCustomersAssignedToUser(@PathVariable String userPhoneNumber) {
-        List<Customer> customers = workflowService.getCustomersAssignedToUser(userPhoneNumber);
-        return new ResponseEntity<>(customers, HttpStatus.OK);
+    public ResponseEntity<List<Customer>> getCustomersAssignedToUser(
+            @PathVariable String userPhoneNumber) {
+        return new ResponseEntity<>(workflowService.getCustomersAssignedToUser(userPhoneNumber), HttpStatus.OK);
     }
 
-    // Download all customer data as CSV
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/customers/download")
     public ResponseEntity<ByteArrayResource> downloadAllCustomersCsv() {
         byte[] csvData = workflowService.downloadAllCustomersCsv();
@@ -49,7 +49,7 @@ public class WorkflowController {
                 .body(resource);
     }
 
-    // Download all user data as CSV
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/download")
     public ResponseEntity<ByteArrayResource> downloadAllUsersCsv() {
         byte[] csvData = workflowService.downloadAllUsersCsv();
@@ -60,21 +60,21 @@ public class WorkflowController {
                 .body(resource);
     }
 
-    // Predict expected number of new customers
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/predict-customers")
     public ResponseEntity<Long> predictNewCustomers(
             @RequestParam LocalDate startDate,
             @RequestParam LocalDate endDate) {
-        long predictedCount = workflowService.predictNewCustomers(startDate, endDate);
-        return new ResponseEntity<>(predictedCount, HttpStatus.OK);
+        return new ResponseEntity<>(
+                workflowService.predictNewCustomers(startDate, endDate), HttpStatus.OK);
     }
 
-    // Merge two customer records
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/merge")
     public ResponseEntity<Customer> mergeCustomers(
             @RequestParam String primaryPhoneNumber,
             @RequestParam String secondaryPhoneNumber) {
-        Customer mergedCustomer = workflowService.mergeCustomers(primaryPhoneNumber, secondaryPhoneNumber);
-        return new ResponseEntity<>(mergedCustomer, HttpStatus.OK);
+        return new ResponseEntity<>(
+                workflowService.mergeCustomers(primaryPhoneNumber, secondaryPhoneNumber), HttpStatus.OK);
     }
 }

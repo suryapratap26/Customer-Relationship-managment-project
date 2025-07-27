@@ -1,13 +1,12 @@
-package com.CustomerRelationshipManagement.services;
+package com.customerRelationshipManagement.services;
 
-import com.CustomerRelationshipManagement.entities.Customer;
-import com.CustomerRelationshipManagement.entities.CustomerAssignment;
-import com.CustomerRelationshipManagement.entities.User;
-import com.CustomerRelationshipManagement.repositories.CustomerAssignmentRepository;
-import com.CustomerRelationshipManagement.repositories.CustomerRepository;
-import com.CustomerRelationshipManagement.repositories.UserRepository;
+import com.customerRelationshipManagement.entities.Customer;
+import com.customerRelationshipManagement.entities.CustomerAssignment;
+import com.customerRelationshipManagement.entities.User;
+import com.customerRelationshipManagement.repositories.CustomerAssignmentRepository;
+import com.customerRelationshipManagement.repositories.CustomerRepository;
+import com.customerRelationshipManagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -129,6 +128,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     }
 
     private String getCurrentUser() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return "system";
     }
 }
